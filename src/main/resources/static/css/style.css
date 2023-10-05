@@ -1,0 +1,27 @@
+
+            body{
+                background-image: url(/images/register2.jpg);
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: 100% 100%;
+                font-style:Arial;
+            }
+            #form{
+                /* background-color:paleturquoise; */
+                min-height:auto;
+                padding: 5px 30px 40px 40px;
+
+            }
+            .regis
+            {
+                font-size: 50px;
+                font-family: Arial;
+                font-weight: 300;
+                border-bottom-style: ridge;
+            }
+            .text{
+                height: 35px;
+            }
+            label{
+                font-size: 18px;
+            }

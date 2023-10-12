@@ -1,6 +1,6 @@
-	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	    pageEncoding="ISO-8859-1"%>
-	<%@ taglib prefix="h" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="h" uri="http://java.sun.com/jsp/jstl/core"%>
 	<!DOCTYPE html>
 	<html>
 	<head>
@@ -19,7 +19,7 @@
 		    <div class="container-fluid">
 		        <!-- Logo -->
 					<img src="/images/247logo.jpeg" style="border-radius:60%" alt="Company logo" width="40" height="40">
-		  
+		  			
 		        <!-- Navigation Links -->
 		        <ul class="navbar-nav ml-auto">
 		            <li class="nav-item">
@@ -34,7 +34,7 @@
 		        </ul>
 		    </div>
 		</nav>
-		<center><i><h2 class="mt-2">24/7 Job Portal</h2></i></center>
+		<center><i><h2 class="mt-2" >24/7 Job Portal</h2></i></center>
 	    <!-- About Section -->
 	    <section id="about" class="py-5">
 	        <div class="container">

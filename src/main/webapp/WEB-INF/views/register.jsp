@@ -32,14 +32,15 @@
 	        </ul>
 	    </div>
 	</nav>
-	 <c:if test="${not empty requestScope.message}">
-        <div class="alert alert-danger">
-            ${requestScope.message}
-        </div>
-    </c:if>
+	 
 	<div class="container mb-4">
         <div class="row mt-4">
             <div class="col-md-6 offset-md-3" id="form" style="border: transparent 4px solid; box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5); border-radius:25px">
+            	<c:if test="${not empty requestScope.message}">
+			        <div class="alert alert-danger mt-2">
+			            ${requestScope.message}
+			        </div>
+		    	</c:if>	    	
                 <center class="regis"><h1>Registration Form</h1></center>
                 <form id="passwordForm" onsubmit="return validatePassword();" action="/userregister" method="POST">
                     <div class="form-group mt-2">

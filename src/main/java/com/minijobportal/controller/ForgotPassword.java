@@ -1,5 +1,7 @@
 package com.minijobportal.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +14,6 @@ import com.minijobportal.model.User;
 import com.minijobportal.service.EmailService;
 import com.minijobportal.service.UserService;
 
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ForgotPassword 
@@ -65,7 +66,7 @@ public class ForgotPassword
 	}
 	
 	@PostMapping("/updatepassword")
-	public String updatePassword(@RequestParam("password") String password,HttpSession session)
+	public String updatePassword(@RequestParam("password") String password,HttpSession session,RedirectAttributes redirectAttributes)
 	{
 		String userUpdateEmail = (String) session.getAttribute("userEmail");
 		User userDetails = userService.findByEmail(userUpdateEmail);
@@ -73,7 +74,8 @@ public class ForgotPassword
 		String bcryptpassword = BCrypt.hashpw(password, BCrypt.gensalt());
 		userDetails.setPassword(bcryptpassword);
 		userService.save(userDetails);
-		return "login";
+		redirectAttributes.addFlashAttribute("changePassword", "Password Changed Successfully");
+		return "redirect:/login";
 		
 	}
 }

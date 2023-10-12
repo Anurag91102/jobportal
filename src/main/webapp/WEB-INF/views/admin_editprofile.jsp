@@ -55,7 +55,7 @@
         <div class="row">
             <div class="col-md-6 offset-md-3" id="form" style="border: transparent 4px solid; box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);">
                 <center class="regis"><h2>Edit User Profile</h2></center>
-                <form action="/admin_updateuser" method="POST">
+                <form action="/admin_updateuser/updated=true" method="POST">
                 	<input type="hidden" name="id" class="form-control text" value="${user.id}">
                     <div class="form-group mt-2">
                         <label>Name</label>

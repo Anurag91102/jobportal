@@ -8,9 +8,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/css/bootstrap.css">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-	
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">	
 	<title>Admin Dashboard</title>
+	
 </head>
 <body>
 	<nav>
@@ -27,14 +27,13 @@
           <div class="col text-center">
                 <h4>Welcome, Admin</h4>
           </div>
-     </div>	
-     
+     </div>	     
      <div class="container mt-4">
         <div class="row">
             <div class="col-md-6 offset-md-3">
-            	<form action="/adminsearch" method="post">
+            	<form action="/admin_dashboard/adminsearch">
 	                <div class="input-group mb-3">
-	                    <input type="text" class="form-control" name="query" placeholder="Search users by firstname,lastname,city,designation,qualification" required autocomplete="off">
+	                    <input type="text" class="form-control" name="query" placeholder="Search users by firstname,lastname,city,designation,qualification" value="${query}" required autocomplete="off">
 	                    <button class="btn btn-primary" type="submit">Search</button>
 	                </div>
                 </form>
@@ -49,7 +48,7 @@
 	                    <div class="user-card">
 	                    	<a href="/adminprofile/${user.id}" class="btn btn-primary  offset-md-10"><i class="fas fa-eye"></i></a>
 	                    	<a href="/admin_userupdate/${user.id}" class="btn btn-success"><i class="fas fa-edit"></i></a>
-	                    	<a href="/deleteUser/${user.id}" class="btn btn-danger"> <i class="fas fa-trash-alt"></i></a>
+	                    	<a href="/deleteUser/${user.id}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');"> <i class="fas fa-trash-alt"></i></a>
 	                        <p><strong>First Name:</strong> ${user.fname}</p>
 	                       <%--  <p>Id:${user.id}</p> --%>
 	                        <p><strong>Last Name:</strong> <c:out value="${user.lname}" /></p>

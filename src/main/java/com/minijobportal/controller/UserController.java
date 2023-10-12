@@ -1,8 +1,12 @@
 package com.minijobportal.controller;
 
+import java.security.Principal;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.minijobportal.model.User;
 import com.minijobportal.service.UserService;
-import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class UserController 
 {
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private UserService userService;
 	
@@ -50,33 +57,39 @@ public class UserController
 		else
 		{	
 			String plainpassword = user.getPassword();
-			String bcryptpassword = BCrypt.hashpw(plainpassword, BCrypt.gensalt());
-			user.setPassword(bcryptpassword);
+			user.setPassword(passwordEncoder.encode(plainpassword));;
+			user.setRoles("ROLE_USER");
 			userService.save(user);
+			redirectAttributes.addFlashAttribute("registerMessage", "Registered Successfully");
 			return "redirect:/login";
 		}	
 	}
 	
 	@PostMapping("/useraccess")
-	public String useraccess(@RequestParam("email") String email,@RequestParam("password") String password,
-			RedirectAttributes redirectAttributes, HttpSession session)
+	public String useraccess(@RequestParam("username") String email,@RequestParam("password") String password, HttpSession session)
 	{
 		String valid = userService.authenticateUser(email,password);
 		if(!valid.equals("null"))
 		{	User userDetails = userService.findByEmail(valid);
-			System.out.println(userDetails);
-			session.setAttribute("id", userDetails.getId());
-			session.setAttribute("name", userDetails.getFname());
-			session.setAttribute("username", valid);
+			session.setAttribute("fname", userDetails);
 			return "redirect:userdashboard";
 		}
 		else 
 		{
-			redirectAttributes.addFlashAttribute("error", "Please Enter Valid Credentials.");
-			return "redirect:login";
+			return "redirect:/login";
 		}	 
 	}
 	
+	@ModelAttribute
+	public void commonUser(Principal p, Model m) 
+	{
+		if (p != null) 
+		{
+			String email = p.getName();
+			User user = userService.findByEmail(email);
+			m.addAttribute("user", user);
+		}
+	}
 	@GetMapping("/userdashboard")
 	public String userdashboard()
 	{
@@ -86,46 +99,47 @@ public class UserController
 	@GetMapping("/usereditprofile/{username}")
 	public String editprofile(@PathVariable("username") String email,Model model)
 	{
-		User updateuser = userService.findByEmail(email);
-		model.addAttribute("users", updateuser);
+		User updateUser = userService.findByEmail(email);
+		model.addAttribute("users", updateUser);
 		return "user_view_profile";
 	}
 	
-	@PostMapping("/search")
-    public String searchUsers(@RequestParam("query") String query, Model model)
-	{
-        List<User> searchResults = userService.searchUser(query);
-        for (User user : searchResults) 
-        {
-			System.out.println(user);
-		}
-        if (searchResults.isEmpty()) 
-        {
-            model.addAttribute("noResults", true);
-        }
-        else 
-        {
-            model.addAttribute("results",searchResults);
-        }
-        return "userdashboard";
-    }
+	@GetMapping("/userdashboard/search")
+	public String searchUsers(@RequestParam("query") String query, Model model) {
+	    if (query != null && !query.isEmpty()) {
+	        List<User> searchResults = userService.searchUser(query);
+	        for (User user : searchResults) {
+	            System.out.println(user);
+	        }
+	        if (searchResults.isEmpty()) 
+	        {
+	            model.addAttribute("noResults", true);
+	        } else {
+	        	model.addAttribute("query",query);
+	            model.addAttribute("results", searchResults);
+	        }
+	    }
+	    return "userdashboard";
+	}
+
 	
 	@PostMapping("/updateuser")
-	public String updateuser(@RequestParam("email") String email,@ModelAttribute User user, HttpSession session)
+	public String updateuser(@RequestParam("id") int id,@ModelAttribute User user, HttpSession session)
 	{
-		User userStoredDetails = userService.findByEmail(email);
+		User userStoredDetails = userService.findById(id);
 		user.setPassword(userStoredDetails.getPassword());
+		user.setRoles(userStoredDetails.getRoles());
 		session.setAttribute("name", user.getFname());
 		userService.save(user);
 		return "redirect:userdashboard";
 	}
 	
-	@GetMapping("/logout")
-	public String logout()
+	@GetMapping("/logoutpage")
+	public String logout(RedirectAttributes redirectAttributes)
 	{
-		return "login";
+		redirectAttributes.addFlashAttribute("successMessage", "Logout Successfully");
+		return "redirect:login";
 	} 
-	
 	
 	@GetMapping("/profile/{id}")
 	public String onlyView(@PathVariable("id") int id,Model model)

@@ -60,7 +60,7 @@
 	        <div class="card-body">
 	            <div class="row align-items-center">
 	                <div class="col">
-	                     <a href="/admin_dashboard" style="text-decoration:none">Back</a>
+	                     <a href="javascript:history.back()" style="text-decoration:none">Back</a>
 	                </div>
 	                <div class="col text-center">
 	                    <h5 class="card-title">User Profile</h5>

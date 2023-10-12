@@ -13,31 +13,30 @@
 	<title>User Dashboard</title>
 </head>
 <body>
-    
     <nav>
         <div class="navbar navbar-expand-lg" style="background:darkgray">
             <div class="col">
-		<!--    <a class="btn btn-danger float-end mx-2" href="/logout">Logout</a> -->
+			<!--    <a class="btn btn-danger float-end mx-2" href="/logout">Logout</a> -->
        <!--      <a class="btn btn-danger float-end mx-2" href="/userdashboard">Home</a>     -->
 				 <a class="nav-link active  float-end m-1 mx-2" href="/logout" >Logout</a>
 	             <a class="nav-link active  float-end m-1 " href="/userdashboard">Home</a>
             </div>
         </div>
     </nav>
-    <div class="row mt-2">
+    <div class="row mt-2">        
           <div class="col text-center offset-md-4">
-                <h4>Welcome, ${sessionScope.name}</h4>
+                <h4>Welcome, ${user.fname}</h4>
           </div>
           <div class="col text-right">
-                <a class="btn btn-outline-secondary float-end mx-2" href="/usereditprofile/${sessionScope.username}">View Profile</a>
+                <a class="btn btn-outline-secondary float-end mx-2" href="/usereditprofile/${user.email}">View Profile</a>
          </div>
       </div>
      <div class="container mt-4">
         <div class="row">
             <div class="col-md-6 offset-md-3">
-            	<form action="/search" method="post">
+            	<form action="/userdashboard/search" >
 	                <div class="input-group mb-3">
-	                    <input type="text" class="form-control" name="query" placeholder="Search users by firstname,lastname,city,designation,qualification	" required>
+	                    <input type="text" class="form-control" name="query" placeholder="Search users by firstname,lastname,city,designation,qualification" value="${query}"  required>
 	                    <button class="btn btn-primary" type="submit">Search</button>
 	                </div>
                 </form>
@@ -67,5 +66,6 @@
 	    	</div>
 		</c:if>
 	</div>
+	
 </body>
 </html>
